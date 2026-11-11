@@ -28,21 +28,17 @@ def obtener_ruta_logo():
 
 LOGO_PATH = obtener_ruta_logo()
 
-# 3. Estilos Visuales Premium e Inmersivos (CSS Custom)
+# 3. CSS Pulido y Equilibrado
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Manrope:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;0,9..40,800&family=Manrope:wght@600;700;800&display=swap');
 
 :root {
-    --navy-dark: #070F1E;
-    --navy-card: #0D1B2E;
-    --navy-surface: #12243D;
-    --cyan-accent: #00B4D8;
-    --cyan-glow: rgba(0, 180, 216, 0.35);
-    --cyan-soft: rgba(0, 180, 216, 0.08);
-    --border-light: rgba(255, 255, 255, 0.08);
-    --text-primary: #0F172A;
-    --text-muted: #64748B;
+    --navy-bg: #091322;
+    --navy-header: #0F1E36;
+    --cyan: #00B4D8;
+    --cyan-hover: #0096C7;
+    --border-subtle: #E2E8F0;
 }
 
 html, body, [class*="css"] {
@@ -50,182 +46,159 @@ html, body, [class*="css"] {
 }
 
 .stApp {
-    background: 
-        radial-gradient(circle at 90% 10%, rgba(0, 180, 216, 0.08), transparent 35%),
-        radial-gradient(circle at 10% 90%, rgba(14, 116, 144, 0.06), transparent 30%),
-        linear-gradient(180deg, #F4F8FC 0%, #EBF1F7 100%);
-    color: var(--text-primary);
+    background-color: #F8FAFC;
+    color: #0F172A;
 }
 
+/* Espaciado del contenedor principal */
 .block-container {
-    max-width: 1440px;
-    padding-top: 1.5rem;
-    padding-bottom: 4rem;
+    max-width: 1350px !important;
+    padding-top: 2rem !important;
+    padding-bottom: 4rem !important;
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
 }
 
-/* Sidebar Customization */
+/* Sidebar Limpio */
 [data-testid="stSidebar"] {
-    background: linear-gradient(185deg, #070F1E 0%, #0D1C30 100%) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    background: linear-gradient(180deg, #091322 0%, #0F1E36 100%) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 [data-testid="stSidebar"] * {
-    color: #E2E8F0 !important;
+    color: #CBD5E1 !important;
+}
+[data-testid="stSidebar"] code {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #38BDF8 !important;
+    border: none !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
 }
 
-/* Hero Header Estilo Industrial */
-.caefe-hero {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 25px;
-    padding: 30px 36px;
-    margin-bottom: 28px;
-    border-radius: 24px;
-    background: linear-gradient(115deg, #070F1E 0%, #0F233D 60%, #004E7C 100%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 16px 40px rgba(7, 15, 30, 0.22);
-    animation: riseIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+/* Caja de Marca en Sidebar */
+.brand-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 24px;
 }
-.caefe-hero:before {
-    content: "";
-    position: absolute;
-    top: -120px;
-    right: -80px;
-    width: 320px;
-    height: 320px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--cyan-glow), transparent 70%);
-    pointer-events: none;
+.brand-title {
+    color: #FFFFFF !important;
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: 0.8px;
+    margin-top: 8px;
 }
-.hero-content {
-    position: relative;
-    z-index: 2;
+.brand-sub {
+    color: #38BDF8 !important;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
 }
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 12px;
-    border-radius: 999px;
+
+/* Hero Header Integrado */
+.hero-card {
+    background: linear-gradient(135deg, #0B192E 0%, #102A4C 60%, #004B75 100%);
+    border-radius: 18px;
+    padding: 32px 36px;
+    margin-bottom: 32px;
+    color: #FFFFFF;
+    box-shadow: 0 10px 30px rgba(11, 25, 46, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.hero-tag {
+    display: inline-block;
     background: rgba(0, 180, 216, 0.15);
     border: 1px solid rgba(0, 180, 216, 0.35);
-    color: #90E0EF !important;
+    color: #7DD3FC !important;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    margin-bottom: 12px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
 }
-.hero-badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #00B4D8;
-    box-shadow: 0 0 8px #00B4D8;
-}
-.caefe-hero h1 {
-    margin: 0;
-    color: #FFFFFF !important;
+.hero-card h1 {
     font-family: 'Manrope', sans-serif;
-    font-size: clamp(24px, 2.3vw, 32px);
+    font-size: 28px;
     font-weight: 800;
-    letter-spacing: -0.6px;
+    color: #FFFFFF !important;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
 }
-.caefe-hero p {
-    margin: 6px 0 0;
+.hero-card p {
     color: #94A3B8 !important;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 400;
 }
 
 /* Tarjetas KPI de Estado */
-.kpi-deck {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+.kpi-row {
+    display: flex;
     gap: 16px;
     margin-bottom: 24px;
 }
-.kpi-tile {
-    position: relative;
-    overflow: hidden;
-    padding: 20px 22px;
-    border-radius: 18px;
+.kpi-card {
+    flex: 1;
     background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    animation: riseIn 0.4s ease both;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 18px 22px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
 }
-.kpi-tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(0, 180, 216, 0.12);
-    border-color: #BAE6FD;
-}
-.kpi-tile .kpi-tag {
+.kpi-card .kpi-label {
     font-size: 11px;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: var(--text-muted);
+    letter-spacing: 1.1px;
+    color: #64748B;
 }
-.kpi-tile .kpi-val {
+.kpi-card .kpi-val {
     font-family: 'Manrope', sans-serif;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 800;
-    color: var(--navy-dark);
+    color: #0F172A;
     margin-top: 4px;
-    letter-spacing: -0.5px;
-}
-.kpi-tile .kpi-sub {
-    font-size: 12px;
-    color: #0284C7;
-    margin-top: 2px;
-    font-weight: 600;
 }
 
-/* Drag & Drop Zone Estilizado */
+/* Subida de archivos estilizada */
 [data-testid="stFileUploader"] {
     background: #FFFFFF;
-    border: 2px dashed #93C5FD;
-    border-radius: 20px;
-    padding: 24px 20px;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.03);
-    transition: all 0.25s ease;
+    border: 1px solid #CBD5E1;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.02);
 }
 [data-testid="stFileUploader"]:hover {
-    border-color: #00B4D8;
-    box-shadow: 0 10px 30px var(--cyan-glow);
-    background: #F8FAFC;
+    border-color: var(--cyan);
 }
 
-/* Botones con gradientes premium */
+/* Botones con estilo enterprise */
 .stButton > button, .stDownloadButton > button {
-    height: 48px;
+    height: 46px;
     border: none !important;
-    border-radius: 12px !important;
+    border-radius: 10px !important;
     background: linear-gradient(135deg, #0096C7 0%, #0077B6 100%) !important;
     color: #FFFFFF !important;
     font-weight: 700 !important;
-    letter-spacing: 0.3px !important;
-    box-shadow: 0 8px 20px rgba(0, 150, 199, 0.28) !important;
-    transition: all 0.25s ease !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 14px rgba(0, 119, 182, 0.25) !important;
+    transition: all 0.2s ease !important;
 }
 .stButton > button:hover, .stDownloadButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(0, 150, 199, 0.38) !important;
-    filter: brightness(1.06);
-}
-
-@keyframes riseIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 119, 182, 0.35) !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 4. Lógica de Conversión y Procesamiento
+# 4. Funciones de Procesamiento y Conversión
 def extraer_codigo_informe(texto):
     if not texto:
         return None
@@ -242,7 +215,7 @@ def prepare_and_convert_excel(uploaded_file):
 
         input_path = original_path
 
-        # Conversión previa de .xls a .xlsx conservando macros y gráficos
+        # Conversión previa de .xls a .xlsx conservando formato
         if original_path.lower().endswith('.xls'):
             cmd_xlsx = [
                 "libreoffice", "--headless", "--nologo", "--nofirststartwizard",
@@ -288,23 +261,23 @@ def prepare_and_convert_excel(uploaded_file):
                     if tiene_datos_reales:
                         hojas_validas.append(sheetname)
 
-                # Eliminar hojas plantilla vacías para evitar exportaciones redundantes
+                # Eliminar hojas plantilla vacías
                 if hojas_validas and len(hojas_validas) < len(wb.sheetnames):
                     for sheetname in list(wb.sheetnames):
                         if sheetname not in hojas_validas:
                             del wb[sheetname]
 
-                # Auto-escalado forzado a 1 página de ancho
+                # Ajustar ancho a 1 página
                 for ws in wb.worksheets:
                     ws.sheet_properties.pageSetUpPr.fitToPage = True
                     ws.page_setup.fitToWidth = 1
                     ws.page_setup.fitToHeight = 0
 
                 wb.save(input_path)
-            except Exception as e:
+            except Exception:
                 pass
 
-        # Conversión a PDF mediante motor LibreOffice headless
+        # Conversión a PDF mediante LibreOffice
         cmd_pdf = [
             "libreoffice", "--headless", "--nologo", "--nofirststartwizard",
             "--convert-to", "pdf", input_path, "--outdir", tmpdir
@@ -330,48 +303,42 @@ def prepare_and_convert_excel(uploaded_file):
         return pdf_bytes, nombre_final
 
 
-# 5. Sidebar Brand & Status
+# 5. Barra Lateral
 with st.sidebar:
     if LOGO_PATH:
+        st.markdown('<div class="brand-box">', unsafe_allow_html=True)
         st.image(LOGO_PATH, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     else:
-        # Fallback vectorial estilizado con el isotipo de CAEFE
         st.markdown("""
-        <div style="background: rgba(255,255,255,0.04); padding: 18px; border-radius: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
-            <svg width="48" height="48" viewBox="0 0 100 100" fill="none">
-                <path d="M 50 12 L 88 50 L 72 50 L 50 28 L 28 50 L 50 72 L 72 50 L 88 50 L 50 88 L 12 50 Z" fill="#00B4D8"/>
-            </svg>
-            <div style="color: #FFFFFF; font-weight: 800; font-size: 18px; letter-spacing: 1px; margin-top: 6px;">CAEFE S.A.</div>
-            <div style="color: #00B4D8; font-size: 10px; font-weight: 700; letter-spacing: 1.5px;">CONVERTIDOR BATCH</div>
+        <div class="brand-box">
+            <div class="brand-title">CAEFE S.A.</div>
+            <div class="brand-sub">CONVERTIDOR BATCH</div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("#### ⚡ Rendimiento & Motor")
-    st.markdown("""
-    - **Alineación:** Ajuste a 1 hoja de ancho.
-    - **Fidelidad:** Conserva sellos, firmas y fotos.
-    - **Compatibilidad:** Reportes `.xlsx` y `.xls`.
-    """)
+    st.markdown("#### Configuración de Exportación")
+    st.markdown(
+        "- **Escala:** Ajuste a 1 hoja de ancho.\n"
+        "- **Fidelidad:** Conserva sellos, firmas y fotos.\n"
+        "- **Formatos:** Compatible con `.xlsx` y `.xls`."
+    )
     st.markdown("---")
-    st.caption("CAEFE S.A. · División Digital 2026")
+    st.caption("CAEFE S.A. · 2026")
 
-# 6. Hero Header
-st.markdown(f"""
-    <section class="caefe-hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <span class="hero-badge-dot"></span> MOTOR DE ALTA PRECISIÓN OPERATIVO
-            </div>
-            <h1>Exportador de Informes a PDF</h1>
-            <p>Transformación masiva de reportes técnicos con escala y encuadre garantizados.</p>
-        </div>
+# 6. Encabezado Principal
+st.markdown("""
+    <section class="hero-card">
+        <span class="hero-tag">SISTEMA ACTIVO</span>
+        <h1>Exportador de Informes a PDF</h1>
+        <p>Conversión por lote con detección automática de número de reporte y ajuste de página.</p>
     </section>
 """, unsafe_allow_html=True)
 
-# 7. Carga e Interacción
-st.markdown("### 📥 Seleccionar Informes")
+# 7. Área de Carga e Interacción
+st.subheader("Cargar Archivos")
 uploaded_files = st.file_uploader(
-    "Arrastra tus reportes técnicos aquí (Soporta múltiples archivos sin límite de peso):",
+    "Selecciona o arrastra los archivos de reporte:",
     type=['xlsx', 'xls'],
     accept_multiple_files=True
 )
@@ -380,49 +347,44 @@ if uploaded_files:
     total_mb = sum([f.size for f in uploaded_files]) / (1024 * 1024)
     
     st.markdown(f"""
-    <div class="kpi-deck">
-        <div class="kpi-tile">
-            <div class="kpi-tag">Documentos a procesar</div>
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-label">Informes seleccionados</div>
             <div class="kpi-val">{len(uploaded_files)}</div>
-            <div class="kpi-sub">Lote listo</div>
         </div>
-        <div class="kpi-tile">
-            <div class="kpi-tag">Peso total de archivos</div>
-            <div class="kpi-val">{total_mb:.2f} <span style="font-size:18px">MB</span></div>
-            <div class="kpi-sub">Buffer en memoria</div>
+        <div class="kpi-card">
+            <div class="kpi-label">Tamaño acumulado</div>
+            <div class="kpi-val">{total_mb:.2f} MB</div>
         </div>
-        <div class="kpi-tile">
-            <div class="kpi-tag">Modo de impresión</div>
-            <div class="kpi-val">100%</div>
-            <div class="kpi-sub">Auto-fit en 1 página de ancho</div>
+        <div class="kpi-card">
+            <div class="kpi-label">Formato de salida</div>
+            <div class="kpi-val">PDF (A4)</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("⚡ Procesar y Generar Lote de PDFs", type="primary", use_container_width=True):
+    if st.button("Procesar y Descargar Lote", type="primary", use_container_width=True):
         barra_progreso = st.progress(0)
         status_box = st.empty()
         zip_buffer = io.BytesIO()
 
         with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
             for idx, file in enumerate(uploaded_files):
-                status_box.markdown(f"**⏳ Procesando ({idx + 1}/{len(uploaded_files)}):** `{file.name}`...")
+                status_box.markdown(f"**Procesando ({idx + 1}/{len(uploaded_files)}):** `{file.name}`...")
                 try:
                     pdf_bytes, nombre_pdf = prepare_and_convert_excel(file)
                     zf.writestr(nombre_pdf, pdf_bytes)
                 except Exception as ex:
-                    st.error(f"Error con el archivo {file.name}: {ex}")
+                    st.error(f"Error en {file.name}: {ex}")
 
                 barra_progreso.progress((idx + 1) / len(uploaded_files))
 
         status_box.empty()
-        st.balloons()
-        st.success(f"🎉 ¡Procesamiento finalizado! Se generaron {len(uploaded_files)} informes en PDF con encuadre exacto.")
+        st.success(f"¡Completado! Se generaron {len(uploaded_files)} archivos PDF listos para descarga.")
         zip_buffer.seek(0)
 
-        st.markdown("<br>", unsafe_allow_html=True)
         st.download_button(
-            label=f"⬇️ DESCARGAR LOTE COMPLETO ({len(uploaded_files)} PDFs en .ZIP)",
+            label=f"Descargar archivo ZIP ({len(uploaded_files)} PDFs)",
             data=zip_buffer,
             file_name="Informes_CAEFE_Generados.zip",
             mime="application/zip",
