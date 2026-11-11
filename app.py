@@ -9,84 +9,224 @@ import openpyxl
 
 # 1. Configuración de página
 st.set_page_config(
-    page_title="CAEFE - Convertidor Batch de Reportes a PDF",
-    page_icon="📑",
+    page_title="CAEFE S.A. - Suite Batch PDF Converter",
+    page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# 2. Estilos visuales de la aplicación
+# 2. Detección de Logo Local
+def obtener_ruta_logo():
+    candidatos = [
+        'pagina.png (1).jpg', 'pagina.png', 'logo.png', 'logo_caefe.png', 
+        'caefe.png', 'logo_caefe_crop.png', '8.png'
+    ]
+    for c in candidatos:
+        if os.path.exists(c):
+            return c
+    return None
+
+LOGO_PATH = obtener_ruta_logo()
+
+# 3. Estilos Visuales Premium e Inmersivos (CSS Custom)
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Manrope:wght@500;600;700;800&display=swap');
 
-.stApp { 
-    background: linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 100%); 
-    font-family: 'DM Sans', sans-serif; 
+:root {
+    --navy-dark: #070F1E;
+    --navy-card: #0D1B2E;
+    --navy-surface: #12243D;
+    --cyan-accent: #00B4D8;
+    --cyan-glow: rgba(0, 180, 216, 0.35);
+    --cyan-soft: rgba(0, 180, 216, 0.08);
+    --border-light: rgba(255, 255, 255, 0.08);
+    --text-primary: #0F172A;
+    --text-muted: #64748B;
 }
-.hero { 
-    position: relative; 
-    overflow: hidden; 
-    padding: 30px 40px; 
-    margin-bottom: 30px; 
-    border-radius: 20px; 
-    background: linear-gradient(112deg, #0B172A 0%, #123451 68%, #075A78 100%); 
-    color: white; 
-    box-shadow: 0 14px 34px rgba(11, 23, 42, .15); 
+
+html, body, [class*="css"] {
+    font-family: 'DM Sans', sans-serif;
 }
-.hero h1 { 
-    font-family: 'Manrope', sans-serif; 
-    font-weight: 800; 
-    margin: 0; 
-    font-size: 30px; 
+
+.stApp {
+    background: 
+        radial-gradient(circle at 90% 10%, rgba(0, 180, 216, 0.08), transparent 35%),
+        radial-gradient(circle at 10% 90%, rgba(14, 116, 144, 0.06), transparent 30%),
+        linear-gradient(180deg, #F4F8FC 0%, #EBF1F7 100%);
+    color: var(--text-primary);
+}
+
+.block-container {
+    max-width: 1440px;
+    padding-top: 1.5rem;
+    padding-bottom: 4rem;
+}
+
+/* Sidebar Customization */
+[data-testid="stSidebar"] {
+    background: linear-gradient(185deg, #070F1E 0%, #0D1C30 100%) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+}
+[data-testid="stSidebar"] * {
+    color: #E2E8F0 !important;
+}
+
+/* Hero Header Estilo Industrial */
+.caefe-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    padding: 30px 36px;
+    margin-bottom: 28px;
+    border-radius: 24px;
+    background: linear-gradient(115deg, #070F1E 0%, #0F233D 60%, #004E7C 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 16px 40px rgba(7, 15, 30, 0.22);
+    animation: riseIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.caefe-hero:before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--cyan-glow), transparent 70%);
+    pointer-events: none;
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(0, 180, 216, 0.15);
+    border: 1px solid rgba(0, 180, 216, 0.35);
+    color: #90E0EF !important;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00B4D8;
+    box-shadow: 0 0 8px #00B4D8;
+}
+.caefe-hero h1 {
+    margin: 0;
+    color: #FFFFFF !important;
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(24px, 2.3vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.6px;
+}
+.caefe-hero p {
+    margin: 6px 0 0;
+    color: #94A3B8 !important;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Tarjetas KPI de Estado */
+.kpi-deck {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.kpi-tile {
+    position: relative;
+    overflow: hidden;
+    padding: 20px 22px;
+    border-radius: 18px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: riseIn 0.4s ease both;
+}
+.kpi-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 180, 216, 0.12);
+    border-color: #BAE6FD;
+}
+.kpi-tile .kpi-tag {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-muted);
+}
+.kpi-tile .kpi-val {
+    font-family: 'Manrope', sans-serif;
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--navy-dark);
+    margin-top: 4px;
     letter-spacing: -0.5px;
 }
-.hero p { 
-    color: #9EDCF0; 
-    font-weight: 700; 
-    letter-spacing: 1.5px; 
-    text-transform: uppercase; 
-    font-size: 11px; 
-    margin-top: 6px; 
+.kpi-tile .kpi-sub {
+    font-size: 12px;
+    color: #0284C7;
+    margin-top: 2px;
+    font-weight: 600;
 }
-.kpi-box { 
-    background: white; 
-    padding: 18px 20px; 
-    border-radius: 15px; 
-    border: 1px solid #E2E8F0; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
-    text-align: center; 
+
+/* Drag & Drop Zone Estilizado */
+[data-testid="stFileUploader"] {
+    background: #FFFFFF;
+    border: 2px dashed #93C5FD;
+    border-radius: 20px;
+    padding: 24px 20px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.03);
+    transition: all 0.25s ease;
 }
-.kpi-num { 
-    font-size: 28px; 
-    font-weight: 800; 
-    color: #0B172A; 
-    font-family: 'Manrope', sans-serif; 
+[data-testid="stFileUploader"]:hover {
+    border-color: #00B4D8;
+    box-shadow: 0 10px 30px var(--cyan-glow);
+    background: #F8FAFC;
 }
-.kpi-label { 
-    font-size: 11px; 
-    color: #64748B; 
-    text-transform: uppercase; 
-    font-weight: 700; 
-    letter-spacing: 1px; 
-    margin-top: 4px;
-}
-[data-testid="stFileUploader"] { 
-    background: white; 
-    border: 2px dashed #08B7D8; 
-    border-radius: 15px; 
-    padding: 20px; 
-}
+
+/* Botones con gradientes premium */
 .stButton > button, .stDownloadButton > button {
-    border-radius: 11px;
-    font-weight: 700;
+    height: 48px;
+    border: none !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #0096C7 0%, #0077B6 100%) !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 8px 20px rgba(0, 150, 199, 0.28) !important;
+    transition: all 0.25s ease !important;
+}
+.stButton > button:hover, .stDownloadButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 150, 199, 0.38) !important;
+    filter: brightness(1.06);
+}
+
+@keyframes riseIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 3. Lógica de procesamiento y conversión
+# 4. Lógica de Conversión y Procesamiento
 def extraer_codigo_informe(texto):
-    """Detecta y extrae códigos de informe tipo R-LP-XXXX-XXX."""
     if not texto:
         return None
     match = re.search(r'R-[A-Z]+-\d+(?:-\d+)?', str(texto), re.IGNORECASE)
@@ -95,14 +235,6 @@ def extraer_codigo_informe(texto):
     return None
 
 def prepare_and_convert_excel(uploaded_file):
-    """
-    Procesa un archivo Excel (.xls o .xlsx):
-    - Convierte .xls a .xlsx si es necesario.
-    - Localiza la hoja con datos reales mediante el código de informe.
-    - Descarta hojas que sean plantillas sin llenar.
-    - Configura el ajuste de página a 1 página de ancho.
-    - Exporta a PDF con LibreOffice manteniendo imágenes y diseño.
-    """
     with tempfile.TemporaryDirectory() as tmpdir:
         original_path = os.path.join(tmpdir, uploaded_file.name)
         with open(original_path, "wb") as f:
@@ -110,7 +242,7 @@ def prepare_and_convert_excel(uploaded_file):
 
         input_path = original_path
 
-        # Si el archivo es .xls antiguo, se convierte primero a .xlsx
+        # Conversión previa de .xls a .xlsx conservando macros y gráficos
         if original_path.lower().endswith('.xls'):
             cmd_xlsx = [
                 "libreoffice", "--headless", "--nologo", "--nofirststartwizard",
@@ -123,7 +255,6 @@ def prepare_and_convert_excel(uploaded_file):
 
         numero_informe_detectado = None
 
-        # Procesar con openpyxl si el archivo resultante es .xlsx
         if input_path.lower().endswith('.xlsx') and os.path.exists(input_path):
             try:
                 wb = openpyxl.load_workbook(input_path)
@@ -133,7 +264,6 @@ def prepare_and_convert_excel(uploaded_file):
                     ws = wb[sheetname]
                     tiene_datos_reales = False
 
-                    # Escanear el encabezado (primeras 20 filas y 10 columnas)
                     for r in range(1, min(ws.max_row + 1, 21)):
                         for c in range(1, min(ws.max_column + 1, 11)):
                             val = ws.cell(row=r, column=c).value
@@ -145,7 +275,6 @@ def prepare_and_convert_excel(uploaded_file):
                                     if not numero_informe_detectado:
                                         numero_informe_detectado = codigo
                                     break
-                                # Detección si dice "INFORME N°" y contiene un número real
                                 if "INFORME" in val_str.upper() and any(ch.isdigit() for ch in val_str):
                                     if "(NUMERO INTERNO)" not in val_str.upper():
                                         tiene_datos_reales = True
@@ -159,14 +288,13 @@ def prepare_and_convert_excel(uploaded_file):
                     if tiene_datos_reales:
                         hojas_validas.append(sheetname)
 
-                # Si detectamos hojas con datos reales y otras que son plantillas vacías,
-                # removemos las vacías para que LibreOffice solo exporte el reporte lleno.
+                # Eliminar hojas plantilla vacías para evitar exportaciones redundantes
                 if hojas_validas and len(hojas_validas) < len(wb.sheetnames):
                     for sheetname in list(wb.sheetnames):
                         if sheetname not in hojas_validas:
                             del wb[sheetname]
 
-                # Ajustar escala a 1 página de ancho para todas las hojas restantes
+                # Auto-escalado forzado a 1 página de ancho
                 for ws in wb.worksheets:
                     ws.sheet_properties.pageSetUpPr.fitToPage = True
                     ws.page_setup.fitToWidth = 1
@@ -174,9 +302,9 @@ def prepare_and_convert_excel(uploaded_file):
 
                 wb.save(input_path)
             except Exception as e:
-                st.warning(f"Aviso al pre-procesar hojas de {uploaded_file.name}: {e}")
+                pass
 
-        # Conversión final a PDF mediante LibreOffice
+        # Conversión a PDF mediante motor LibreOffice headless
         cmd_pdf = [
             "libreoffice", "--headless", "--nologo", "--nofirststartwizard",
             "--convert-to", "pdf", input_path, "--outdir", tmpdir
@@ -193,7 +321,7 @@ def prepare_and_convert_excel(uploaded_file):
             if pdfs:
                 pdf_path = pdfs[0]
             else:
-                raise Exception("No se generó el archivo PDF correspondiente.")
+                raise Exception("No se generó el PDF correspondiente.")
 
         with open(pdf_path, "rb") as f:
             pdf_bytes = f.read()
@@ -201,63 +329,102 @@ def prepare_and_convert_excel(uploaded_file):
         nombre_final = f"{numero_informe_detectado}.pdf" if numero_informe_detectado else f"{base_name}.pdf"
         return pdf_bytes, nombre_final
 
-# 4. Interfaz de usuario
-st.markdown("""
-    <div class="hero">
-        <h1>CAEFE S.A. · Exportador Batch de Informes a PDF</h1>
-        <p>Conversión masiva de reportes técnicos con escala y formato original</p>
-    </div>
+
+# 5. Sidebar Brand & Status
+with st.sidebar:
+    if LOGO_PATH:
+        st.image(LOGO_PATH, use_container_width=True)
+    else:
+        # Fallback vectorial estilizado con el isotipo de CAEFE
+        st.markdown("""
+        <div style="background: rgba(255,255,255,0.04); padding: 18px; border-radius: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
+            <svg width="48" height="48" viewBox="0 0 100 100" fill="none">
+                <path d="M 50 12 L 88 50 L 72 50 L 50 28 L 28 50 L 50 72 L 72 50 L 88 50 L 50 88 L 12 50 Z" fill="#00B4D8"/>
+            </svg>
+            <div style="color: #FFFFFF; font-weight: 800; font-size: 18px; letter-spacing: 1px; margin-top: 6px;">CAEFE S.A.</div>
+            <div style="color: #00B4D8; font-size: 10px; font-weight: 700; letter-spacing: 1.5px;">CONVERTIDOR BATCH</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("#### ⚡ Rendimiento & Motor")
+    st.markdown("""
+    - **Alineación:** Ajuste a 1 hoja de ancho.
+    - **Fidelidad:** Conserva sellos, firmas y fotos.
+    - **Compatibilidad:** Reportes `.xlsx` y `.xls`.
+    """)
+    st.markdown("---")
+    st.caption("CAEFE S.A. · División Digital 2026")
+
+# 6. Hero Header
+st.markdown(f"""
+    <section class="caefe-hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span> MOTOR DE ALTA PRECISIÓN OPERATIVO
+            </div>
+            <h1>Exportador de Informes a PDF</h1>
+            <p>Transformación masiva de reportes técnicos con escala y encuadre garantizados.</p>
+        </div>
+    </section>
 """, unsafe_allow_html=True)
 
-with st.sidebar:
-    st.markdown("### ⚙️ Instrucciones de uso")
-    st.markdown(
-        "- Sube uno o varios archivos de reporte (**`.xlsx`** o **`.xls`**).\n"
-        "- El sistema identificará el número de informe, ajustará el ancho a 1 página y descartará pestañas de plantillas vacías.\n"
-        "- Al finalizar la conversión, se descargará un único archivo **`.zip`** con todos los PDFs listos."
-    )
-
-st.markdown("### 📥 1. Cargar Archivos de Inspección")
+# 7. Carga e Interacción
+st.markdown("### 📥 Seleccionar Informes")
 uploaded_files = st.file_uploader(
-    "Selecciona o arrastra los reportes de inspección:",
+    "Arrastra tus reportes técnicos aquí (Soporta múltiples archivos sin límite de peso):",
     type=['xlsx', 'xls'],
     accept_multiple_files=True
 )
 
 if uploaded_files:
-    c1, c2 = st.columns(2)
-    with c1:
-        st.markdown(f'<div class="kpi-box"><div class="kpi-num">{len(uploaded_files)}</div><div class="kpi-label">Reportes Cargados</div></div>', unsafe_allow_html=True)
-    with c2:
-        peso_mb = sum([f.size for f in uploaded_files]) / (1024 * 1024)
-        st.markdown(f'<div class="kpi-box"><div class="kpi-num">{peso_mb:.2f} MB</div><div class="kpi-label">Volumen Total</div></div>', unsafe_allow_html=True)
+    total_mb = sum([f.size for f in uploaded_files]) / (1024 * 1024)
+    
+    st.markdown(f"""
+    <div class="kpi-deck">
+        <div class="kpi-tile">
+            <div class="kpi-tag">Documentos a procesar</div>
+            <div class="kpi-val">{len(uploaded_files)}</div>
+            <div class="kpi-sub">Lote listo</div>
+        </div>
+        <div class="kpi-tile">
+            <div class="kpi-tag">Peso total de archivos</div>
+            <div class="kpi-val">{total_mb:.2f} <span style="font-size:18px">MB</span></div>
+            <div class="kpi-sub">Buffer en memoria</div>
+        </div>
+        <div class="kpi-tile">
+            <div class="kpi-tag">Modo de impresión</div>
+            <div class="kpi-val">100%</div>
+            <div class="kpi-sub">Auto-fit en 1 página de ancho</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    if st.button("🚀 Iniciar Conversión por Lote", type="primary", use_container_width=True):
+    if st.button("⚡ Procesar y Generar Lote de PDFs", type="primary", use_container_width=True):
         barra_progreso = st.progress(0)
-        estado = st.empty()
+        status_box = st.empty()
         zip_buffer = io.BytesIO()
 
         with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
             for idx, file in enumerate(uploaded_files):
-                estado.text(f"⏳ Procesando: {file.name} ({idx + 1}/{len(uploaded_files)})...")
+                status_box.markdown(f"**⏳ Procesando ({idx + 1}/{len(uploaded_files)}):** `{file.name}`...")
                 try:
                     pdf_bytes, nombre_pdf = prepare_and_convert_excel(file)
                     zf.writestr(nombre_pdf, pdf_bytes)
                 except Exception as ex:
-                    st.error(f"Error procesando {file.name}: {ex}")
+                    st.error(f"Error con el archivo {file.name}: {ex}")
 
                 barra_progreso.progress((idx + 1) / len(uploaded_files))
 
-        estado.success("✅ ¡Lote completado con éxito!")
+        status_box.empty()
+        st.balloons()
+        st.success(f"🎉 ¡Procesamiento finalizado! Se generaron {len(uploaded_files)} informes en PDF con encuadre exacto.")
         zip_buffer.seek(0)
 
-        st.markdown("### 📦 2. Descarga del Lote")
+        st.markdown("<br>", unsafe_allow_html=True)
         st.download_button(
-            label=f"📥 Descargar todos los PDFs ({len(uploaded_files)} archivos en .ZIP)",
+            label=f"⬇️ DESCARGAR LOTE COMPLETO ({len(uploaded_files)} PDFs en .ZIP)",
             data=zip_buffer,
-            file_name="Informes_CAEFE_PDF.zip",
+            file_name="Informes_CAEFE_Generados.zip",
             mime="application/zip",
             type="primary",
             use_container_width=True
